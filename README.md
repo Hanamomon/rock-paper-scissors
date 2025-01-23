@@ -1,0 +1,1 @@
+This is an attempt at a rock paper scissors game that displays its results in the console with no GUI.
