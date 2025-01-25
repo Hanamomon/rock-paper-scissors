@@ -14,31 +14,60 @@ function getHumanChoice() {
         choice=prompt("Enter a valid choice:");
     return choice;
 }
+let buttons=document.querySelector(".buttons");
+let rock=document.querySelector("#rock");
+let paper=document.querySelector("#paper");
+let scissors=document.querySelector("#scissors");
+let result=document.querySelector(".result");
 function playGame() {
     let humanScore=0, computerScore=0;
     let playRound = (humanChoice, computerChoice) => {
         if (humanChoice==="rock" && computerChoice==="scissors" || humanChoice==="paper" && computerChoice==="rock" || humanChoice==="scissors" && computerChoice==="paper")
         {
-            console.log("You win! "+humanChoice.at(0).toUpperCase()+humanChoice.slice(1)+" beats "+computerChoice.at(0).toUpperCase()+computerChoice.slice(1)+".");
-            humanScore++;
+            ++humanScore;
+            result.textContent="You win! "+humanChoice.at(0).toUpperCase()+humanChoice.slice(1)+" beats "+computerChoice.at(0).toUpperCase()+computerChoice.slice(1)+". ("+humanScore+" vs "+computerScore+")";
         }
         else if (humanChoice===computerChoice)
         {
-            console.log("Draw!");
+            result.textContent="Draw! ("+humanScore+" vs "+computerScore+")";
         }
-        else
+        else if (computerChoice==="rock" && humanChoice==="scissors" || computerChoice==="paper" && humanChoice==="rock" || computerChoice==="scissors" && humanChoice==="paper")
         {
-            console.log("You lose! "+computerChoice.at(0).toUpperCase()+computerChoice.slice(1)+" beats "+humanChoice.at(0).toUpperCase()+humanChoice.slice(1)+".");
-            computerScore++;
+            ++computerScore;
+            result.textContent="You lose! "+computerChoice.at(0).toUpperCase()+computerChoice.slice(1)+" beats "+humanChoice.at(0).toUpperCase()+humanChoice.slice(1)+". ("+humanScore+" vs "+computerScore+")";
         }
     }
-    for (let i=0; i<5; i++)
-        playRound(getHumanChoice(), getComputerChoice());
-    if (humanScore>computerScore)
-        console.log("You win the game!");
-    else if (humanScore===computerScore)
-        console.log("The game is a draw!");
-    else
-        console.log("You lost the game!");
+    buttons.addEventListener("click", (e) => {
+        switch (e.target){
+        case rock:
+            playRound("rock", getComputerChoice())
+            break;
+        case paper:
+            playRound("paper", getComputerChoice())
+            break;
+        case scissors:
+            playRound("scissors", getComputerChoice())
+            break;
+        }
+        if (humanScore===5 && computerScore===5)
+        {
+            result.textContent="The game ends in a draw."
+            humanScore=0;
+            computerScore=0;
+        }
+        else if (humanScore>=5)
+        {
+            result.textContent="You win the game!"
+            humanScore=0;
+            computerScore=0;
+        }
+        else if (computerScore>=5)
+        {
+            result.textContent="You lose the game!"
+            humanScore=0;
+            computerScore=0;
+        }
+    })
+
 }
 playGame()
